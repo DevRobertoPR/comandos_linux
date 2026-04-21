@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comandos Linux – Repaso</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d0f14;
+        --surface: #161920;
+        --border: #252933;
+        --accent: #f5c542;
+        --accent2: #4a9eff;
+        --text: #e2e8f0;
+        --muted: #6b7280;
+        --green: #4ade80;
+        --red: #f87171;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        min-height: 100vh;
+        padding: 2rem 1.5rem 4rem;
+      }
+
+      /* ── Header ── */
+      header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .badge {
+        display: inline-block;
+        background: var(--accent);
+        color: #000;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        padding: 0.3rem 0.8rem;
+        border-radius: 2px;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+
+      h1 span {
+        color: var(--accent);
+      }
+
+      .subtitle {
+        margin-top: 0.7rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* ── Filter bar ── */
+      .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        justify-content: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .filter-btn {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        padding: 0.4rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .filter-btn:hover,
+      .filter-btn.active {
+        background: var(--accent);
+        color: #000;
+        border-color: var(--accent);
+      }
+
+      /* ── Grid ── */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.2rem;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      /* ── Card ── */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.5rem 1.6rem;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
+        animation: fadeUp 0.4s both;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background: var(--accent);
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .card:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent);
+        box-shadow: 0 8px 30px rgba(245, 197, 66, 0.08);
+      }
+
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .cmd {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--accent);
+        word-break: break-all;
+      }
+
+      .tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        padding: 0.25rem 0.6rem;
+        border-radius: 3px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .tag.nav {
+        background: rgba(74, 158, 255, 0.15);
+        color: var(--accent2);
+      }
+      .tag.files {
+        background: rgba(74, 222, 128, 0.15);
+        color: var(--green);
+      }
+      .tag.perm {
+        background: rgba(245, 197, 66, 0.15);
+        color: var(--accent);
+      }
+      .tag.users {
+        background: rgba(248, 113, 113, 0.15);
+        color: var(--red);
+      }
+      .tag.util {
+        background: rgba(107, 114, 128, 0.2);
+        color: var(--muted);
+      }
+
+      .card p {
+        font-size: 0.9rem;
+        line-height: 1.65;
+        color: #9ca3af;
+      }
+
+      /* Variants / flags */
+      .flags {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .flag-row {
+        display: flex;
+        gap: 0.8rem;
+        align-items: baseline;
+        font-size: 0.82rem;
+      }
+
+      .flag-name {
+        font-family: "JetBrains Mono", monospace;
+        color: var(--accent2);
+        min-width: 4.5rem;
+        flex-shrink: 0;
+      }
+
+      .flag-desc {
+        color: var(--muted);
+      }
+
+      /* Counter */
+      .count {
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 1.5rem;
+      }
+
+      .count span {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      /* fadeUp */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card:nth-child(1) {
+        animation-delay: 0.04s;
+      }
+      .card:nth-child(2) {
+        animation-delay: 0.08s;
+      }
+      .card:nth-child(3) {
+        animation-delay: 0.12s;
+      }
+      .card:nth-child(4) {
+        animation-delay: 0.16s;
+      }
+      .card:nth-child(5) {
+        animation-delay: 0.2s;
+      }
+      .card:nth-child(6) {
+        animation-delay: 0.24s;
+      }
+      .card:nth-child(7) {
+        animation-delay: 0.28s;
+      }
+      .card:nth-child(8) {
+        animation-delay: 0.32s;
+      }
+      .card:nth-child(9) {
+        animation-delay: 0.36s;
+      }
+      .card:nth-child(10) {
+        animation-delay: 0.4s;
+      }
+      .card:nth-child(11) {
+        animation-delay: 0.44s;
+      }
+
+      /* Hidden */
+      .card.hidden {
+        display: none;
+      }
+
+      /* Search */
+      .search-wrap {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .search-wrap input {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.85rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        width: min(100%, 360px);
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .search-wrap input::placeholder {
+        color: var(--muted);
+      }
+      .search-wrap input:focus {
+        border-color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="badge">$ linux terminal</div>
+      <h1>Comandos <span>Linux</span></h1>
+      <p class="subtitle">// hoja de repaso · 15 comandos</p>
+    </header>
+
+    <div class="search-wrap">
+      <input type="text" id="search" placeholder="Buscar comando..." />
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="nav">Navegación</button>
+      <button class="filter-btn" data-filter="files">Archivos</button>
+      <button class="filter-btn" data-filter="perm">Permisos</button>
+      <button class="filter-btn" data-filter="users">Usuarios</button>
+      <button class="filter-btn" data-filter="util">Utilidad</button>
+    </div>
+
+    <p class="count" id="count"><span id="visible">11</span> de 11 comandos</p>
+
+    <div class="grid" id="grid">
+      <!-- pwd -->
+      <div class="card" data-cat="nav">
+        <div class="card-top">
+          <span class="cmd">pwd</span>
+          <span class="tag nav">navegación</span>
+        </div>
+        <p>
+          <strong>Print Working Directory.</strong> Muestra la ruta completa del
+          directorio en el que te encuentras actualmente dentro de la estructura
+          de directorios.
+        </p>
+      </div>
+
+      <!-- cd -->
+      <div class="card" data-cat="nav">
+        <div class="card-top">
+          <span class="cmd">cd</span>
+          <span class="tag nav">navegación</span>
+        </div>
+        <p>
+          <strong>Change Directory.</strong> Sirve para cambiar de directorio.
+          Se usa con la ruta destino; por ejemplo
+          <code style="color: var(--accent2)">cd /home</code>.
+        </p>
+        <div class="flags">
+          <div class="flag-row">
+            <span class="flag-name">cd ..</span
+            ><span class="flag-desc">Sube al directorio padre (anterior).</span>
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">cd ~</span
+            ><span class="flag-desc">Va al directorio home del usuario.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- .. -->
+      <div class="card" data-cat="nav">
+        <div class="card-top">
+          <span class="cmd">..</span>
+          <span class="tag nav">navegación</span>
+        </div>
+        <p>
+          Atajo que representa el <strong>directorio padre</strong>. Se usa
+          junto con <code style="color: var(--accent2)">cd ..</code> para
+          retroceder un nivel en la estructura de directorios.
+        </p>
+      </div>
+
+      <!-- ls -->
+      <div class="card" data-cat="nav">
+        <div class="card-top">
+          <span class="cmd">ls</span>
+          <span class="tag nav">navegación</span>
+        </div>
+        <p>
+          Lista el contenido del directorio actual: archivos y subdirectorios.
+        </p>
+        <div class="flags">
+          <div class="flag-row">
+            <span class="flag-name">ls -a</span
+            ><span class="flag-desc"
+              >Muestra también archivos y carpetas ocultos.</span
+            >
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">ls -t</span
+            ><span class="flag-desc">Ordena por fecha de modificación.</span>
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">ls -X</span
+            ><span class="flag-desc">Ordena por extensión de archivo.</span>
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">ls -l</span
+            ><span class="flag-desc"
+              >Lista detallada: usuario, grupo, permisos, tamaño, fecha.</span
+            >
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">ls -lh</span
+            ><span class="flag-desc"
+              >Igual que -l pero con tamaños legibles (KB, MB…).</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- mkdir -->
+      <div class="card" data-cat="files">
+        <div class="card-top">
+          <span class="cmd">mkdir</span>
+          <span class="tag files">archivos</span>
+        </div>
+        <p>
+          <strong>Make Directory.</strong> Crea un nuevo directorio (carpeta)
+          con el nombre que se indique. Ejemplo:
+          <code style="color: var(--accent2)">mkdir proyectos</code>.
+        </p>
+      </div>
+
+      <!-- rmdir -->
+      <div class="card" data-cat="files">
+        <div class="card-top">
+          <span class="cmd">rmdir</span>
+          <span class="tag files">archivos</span>
+        </div>
+        <p>
+          Elimina un directorio <strong>vacío</strong>. Para usarlo hay que
+          indicar la ruta del directorio o estar ubicado en su directorio padre.
+        </p>
+      </div>
+
+      <!-- touch -->
+      <div class="card" data-cat="files">
+        <div class="card-top">
+          <span class="cmd">touch</span>
+          <span class="tag files">archivos</span>
+        </div>
+        <p>
+          Crea un <strong>archivo vacío</strong> o actualiza las marcas de
+          tiempo de un archivo existente. La información de tiempo consta de
+          tres atributos: tiempo de acceso, de modificación y de cambio.
+        </p>
+      </div>
+
+      <!-- rm -->
+      <div class="card" data-cat="files">
+        <div class="card-top">
+          <span class="cmd">rm</span>
+          <span class="tag files">archivos</span>
+        </div>
+        <p>
+          <strong>Remove.</strong> Elimina archivos especificados en la línea de
+          comando. Usado de forma recursiva también puede eliminar directorios
+          completos.
+        </p>
+        <div class="flags">
+          <div class="flag-row">
+            <span class="flag-name">rm -r</span
+            ><span class="flag-desc"
+              >Elimina directorios y su contenido de forma recursiva.</span
+            >
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">rm -f</span
+            ><span class="flag-desc"
+              >Fuerza la eliminación sin pedir confirmación.</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- clear -->
+      <div class="card" data-cat="util">
+        <div class="card-top">
+          <span class="cmd">clear</span>
+          <span class="tag util">utilidad</span>
+        </div>
+        <p>
+          Limpia la pantalla de la terminal, eliminando el historial visual de
+          comandos anteriores sin borrar el historial real.
+        </p>
+      </div>
+
+      <!-- chown -->
+      <div class="card" data-cat="perm">
+        <div class="card-top">
+          <span class="cmd">chown</span>
+          <span class="tag perm">permisos</span>
+        </div>
+        <p>
+          <strong>Change Owner.</strong> Cambia el propietario de archivos,
+          directorios y enlaces simbólicos. Se puede especificar usuario y grupo
+          a la vez.
+        </p>
+        <div class="flags">
+          <div class="flag-row">
+            <span class="flag-name">chown -R</span
+            ><span class="flag-desc"
+              >Aplica el cambio de forma recursiva en todo el directorio.</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- useradd & passwd -->
+      <div class="card" data-cat="users">
+        <div class="card-top">
+          <span class="cmd">useradd</span>
+          <span class="tag users">usuarios</span>
+        </div>
+        <p>
+          Crea un nuevo usuario en el sistema. Sintaxis:
+          <code style="color: var(--accent2)"
+            >useradd [opciones] nombre_usuario</code
+          >. Sin opciones extra crea el usuario sin contraseña ni directorio
+          home.
+        </p>
+      </div>
+
+      <!-- mv -->
+      <div class="card" data-cat="files">
+        <div class="card-top">
+          <span class="cmd">mv</span>
+          <span class="tag files">archivos</span>
+        </div>
+        <p>
+          <strong>Move.</strong> Mueve un archivo o directorio de un lugar a
+          otro. También se usa para <strong>renombrar</strong> archivos.
+          Ejemplo:
+          <code style="color: var(--accent2)">mv archivo.txt /destino/</code>.
+        </p>
+        <div class="flags">
+          <div class="flag-row">
+            <span class="flag-name">mv -i</span
+            ><span class="flag-desc"
+              >Pide confirmación antes de sobreescribir un archivo
+              existente.</span
+            >
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">mv -u</span
+            ><span class="flag-desc"
+              >Solo mueve si el origen es más nuevo que el destino.</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- tar -->
+      <div class="card" data-cat="files">
+        <div class="card-top">
+          <span class="cmd">tar</span>
+          <span class="tag files">archivos</span>
+        </div>
+        <p>
+          <strong>Tape Archive.</strong> Empaqueta y comprime una colección de
+          archivos y carpetas. Genera archivos
+          <code style="color: var(--accent2)">.tar</code>; combinado con gzip
+          produce <code style="color: var(--accent2)">.tar.gz</code>.
+        </p>
+        <div class="flags">
+          <div class="flag-row">
+            <span class="flag-name">-c</span
+            ><span class="flag-desc">Crear un nuevo archivo .tar.</span>
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">-v</span
+            ><span class="flag-desc"
+              >Muestra el progreso detallado de la compresión.</span
+            >
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">-f</span
+            ><span class="flag-desc"
+              >Especifica el nombre del archivo resultante.</span
+            >
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">-z</span
+            ><span class="flag-desc">Compresión gzip (.tar.gz).</span>
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">-j</span
+            ><span class="flag-desc">Compresión bzip2.</span>
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">-x</span
+            ><span class="flag-desc">Extraer el contenido del archivo.</span>
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">-C</span
+            ><span class="flag-desc"
+              >Extraer en un directorio diferente al actual.</span
+            >
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">-r</span
+            ><span class="flag-desc"
+              >Agregar o actualizar archivos dentro de un .tar existente.</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- alternatives -->
+      <div class="card" data-cat="perm">
+        <div class="card-top">
+          <span class="cmd">alternatives</span>
+          <span class="tag perm">permisos</span>
+        </div>
+        <p>
+          Establece <strong>enlaces simbólicos</strong> para programas
+          predeterminados comunes. Permite que múltiples programas con funciones
+          similares coexistan, determinando cuál se usa por defecto bajo un
+          nombre genérico (ej.
+          <code style="color: var(--accent2)">/usr/bin/editor</code>). El
+          administrador puede anular la selección automática en cualquier
+          momento.
+        </p>
+      </div>
+    </div>
+    <!-- /grid -->
+
+    <!-- passwd card fuera del grid para que quede suelto o la metemos dentro -->
+    <div style="max-width: 1100px; margin: 1.2rem auto 0">
+      <div class="card" data-cat="users" style="animation-delay: 0.48s">
+        <div class="card-top">
+          <span class="cmd">passwd</span>
+          <span class="tag users">usuarios</span>
+        </div>
+        <p>
+          Asigna o cambia la contraseña de una cuenta de usuario. Ejemplo:
+          <code style="color: var(--accent2)">passwd nombre_usuario</code>.
+          Pedirá la nueva contraseña dos veces para confirmar.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const cards = () => [...document.querySelectorAll(".card")];
+      const countEl = document.getElementById("visible");
+
+      function updateCount() {
+        const visible = cards().filter(
+          (c) => !c.classList.contains("hidden"),
+        ).length;
+        countEl.textContent = visible;
+        document.getElementById("count").querySelector("span:last-of-type") &&
+          null;
+        // just update the one span
+      }
+
+      // Filter buttons
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const f = btn.dataset.filter;
+          const q = document.getElementById("search").value.toLowerCase();
+          cards().forEach((c) => {
+            const catMatch = f === "all" || c.dataset.cat === f;
+            const txtMatch =
+              q === "" || c.textContent.toLowerCase().includes(q);
+            c.classList.toggle("hidden", !(catMatch && txtMatch));
+          });
+          updateCount();
+        });
+      });
+
+      // Search
+      document.getElementById("search").addEventListener("input", (e) => {
+        const q = e.target.value.toLowerCase();
+        const f = document.querySelector(".filter-btn.active").dataset.filter;
+        cards().forEach((c) => {
+          const catMatch = f === "all" || c.dataset.cat === f;
+          const txtMatch = q === "" || c.textContent.toLowerCase().includes(q);
+          c.classList.toggle("hidden", !(catMatch && txtMatch));
+        });
+        updateCount();
+      });
+
+      // Update total
+      document.getElementById("count").innerHTML =
+        `<span id="visible">${cards().length}</span> de ${cards().length} comandos`;
+    </script>
+  </body>
+</html>
