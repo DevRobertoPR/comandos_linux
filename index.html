@@ -352,9 +352,8 @@
           <span class="tag nav">navegación</span>
         </div>
         <p>
-          <strong>Print Working Directory.</strong> Muestra la ruta completa del
-          directorio en el que te encuentras actualmente dentro de la estructura
-          de directorios.
+          Te devuelve la ruta en la que estas situado, se suele utilizar para
+          saber en que parte de la estructura de directorios te encuentras.
         </p>
       </div>
 
@@ -365,9 +364,8 @@
           <span class="tag nav">navegación</span>
         </div>
         <p>
-          <strong>Change Directory.</strong> Sirve para cambiar de directorio.
-          Se usa con la ruta destino; por ejemplo
-          <code style="color: var(--accent2)">cd /home</code>.
+          Es un comando que significa change directory y sirve para cambiar de
+          directorio.
         </p>
         <div class="flags">
           <div class="flag-row">
@@ -387,11 +385,7 @@
           <span class="cmd">..</span>
           <span class="tag nav">navegación</span>
         </div>
-        <p>
-          Atajo que representa el <strong>directorio padre</strong>. Se usa
-          junto con <code style="color: var(--accent2)">cd ..</code> para
-          retroceder un nivel en la estructura de directorios.
-        </p>
+        <p>Comando que sirve para regresarme a un directorio anterior.</p>
       </div>
 
       <!-- ls -->
@@ -400,34 +394,37 @@
           <span class="cmd">ls</span>
           <span class="tag nav">navegación</span>
         </div>
-        <p>
-          Lista el contenido del directorio actual: archivos y subdirectorios.
-        </p>
+        <p>Lista el contenido del directorio en el que estamos.</p>
         <div class="flags">
           <div class="flag-row">
             <span class="flag-name">ls -a</span
             ><span class="flag-desc"
-              >Muestra también archivos y carpetas ocultos.</span
+              >Nos muestra los archivos y directorios dentro del directorio
+              actual, incluyendo los archivos y directorios ocultos.</span
             >
           </div>
           <div class="flag-row">
             <span class="flag-name">ls -t</span
-            ><span class="flag-desc">Ordena por fecha de modificación.</span>
+            ><span class="flag-desc"
+              >Ordena los archivos por fecha de modificación.</span
+            >
           </div>
           <div class="flag-row">
             <span class="flag-name">ls -X</span
-            ><span class="flag-desc">Ordena por extensión de archivo.</span>
+            ><span class="flag-desc">Ordena los archivos por extensión.</span>
           </div>
           <div class="flag-row">
             <span class="flag-name">ls -l</span
             ><span class="flag-desc"
-              >Lista detallada: usuario, grupo, permisos, tamaño, fecha.</span
+              >Muestra toda la información: usuario, grupo, permisos, tamaño,
+              fecha y hora de creación.</span
             >
           </div>
           <div class="flag-row">
             <span class="flag-name">ls -lh</span
             ><span class="flag-desc"
-              >Igual que -l pero con tamaños legibles (KB, MB…).</span
+              >Muestra la misma información que ls -l pero con las unidades de
+              tamaño en KB, MB, etc.</span
             >
           </div>
         </div>
@@ -440,9 +437,8 @@
           <span class="tag files">archivos</span>
         </div>
         <p>
-          <strong>Make Directory.</strong> Crea un nuevo directorio (carpeta)
-          con el nombre que se indique. Ejemplo:
-          <code style="color: var(--accent2)">mkdir proyectos</code>.
+          Es un comando que significa make directory y sirve para crear
+          directorios también llamados carpetas.
         </p>
       </div>
 
@@ -453,8 +449,8 @@
           <span class="tag files">archivos</span>
         </div>
         <p>
-          Elimina un directorio <strong>vacío</strong>. Para usarlo hay que
-          indicar la ruta del directorio o estar ubicado en su directorio padre.
+          Comando que permite eliminar un directorio. Para hacer esto hay que
+          poner la ruta del directorio o estar en el directorio padre.
         </p>
       </div>
 
@@ -465,9 +461,11 @@
           <span class="tag files">archivos</span>
         </div>
         <p>
-          Crea un <strong>archivo vacío</strong> o actualiza las marcas de
-          tiempo de un archivo existente. La información de tiempo consta de
-          tres atributos: tiempo de acceso, de modificación y de cambio.
+          El comando touch de Linux se usa principalmente para crear archivos
+          vacíos y cambiar marcas de tiempo de archivos o carpetas. La
+          información de marca de tiempo de los archivos consta de tres
+          atributos: tiempo de acceso, tiempo de modificación y tiempo de
+          cambio.
         </p>
       </div>
 
@@ -478,24 +476,10 @@
           <span class="tag files">archivos</span>
         </div>
         <p>
-          <strong>Remove.</strong> Elimina archivos especificados en la línea de
-          comando. Usado de forma recursiva también puede eliminar directorios
-          completos.
+          El comando rm ("eliminar") se usa para eliminar archivos. Cuando se
+          usa recursivamente, se puede usar para borrar también directorios. Rm
+          elimina cada archivo especificado en la línea de comando.
         </p>
-        <div class="flags">
-          <div class="flag-row">
-            <span class="flag-name">rm -r</span
-            ><span class="flag-desc"
-              >Elimina directorios y su contenido de forma recursiva.</span
-            >
-          </div>
-          <div class="flag-row">
-            <span class="flag-name">rm -f</span
-            ><span class="flag-desc"
-              >Fuerza la eliminación sin pedir confirmación.</span
-            >
-          </div>
-        </div>
       </div>
 
       <!-- clear -->
@@ -504,10 +488,7 @@
           <span class="cmd">clear</span>
           <span class="tag util">utilidad</span>
         </div>
-        <p>
-          Limpia la pantalla de la terminal, eliminando el historial visual de
-          comandos anteriores sin borrar el historial real.
-        </p>
+        <p>Limpiar pantalla.</p>
       </div>
 
       <!-- chown -->
@@ -517,18 +498,10 @@
           <span class="tag perm">permisos</span>
         </div>
         <p>
-          <strong>Change Owner.</strong> Cambia el propietario de archivos,
-          directorios y enlaces simbólicos. Se puede especificar usuario y grupo
-          a la vez.
+          Un comando chown de Linux es una abreviatura para "change owner"
+          (cambiar de propietario). Con las opciones chown, se puede cambiar la
+          propiedad de los archivos, directorios y enlaces.
         </p>
-        <div class="flags">
-          <div class="flag-row">
-            <span class="flag-name">chown -R</span
-            ><span class="flag-desc"
-              >Aplica el cambio de forma recursiva en todo el directorio.</span
-            >
-          </div>
-        </div>
       </div>
 
       <!-- useradd & passwd -->
@@ -537,13 +510,7 @@
           <span class="cmd">useradd</span>
           <span class="tag users">usuarios</span>
         </div>
-        <p>
-          Crea un nuevo usuario en el sistema. Sintaxis:
-          <code style="color: var(--accent2)"
-            >useradd [opciones] nombre_usuario</code
-          >. Sin opciones extra crea el usuario sin contraseña ni directorio
-          home.
-        </p>
+        <p>Comando que sirve para crear usuarios.</p>
       </div>
 
       <!-- mv -->
@@ -552,27 +519,7 @@
           <span class="cmd">mv</span>
           <span class="tag files">archivos</span>
         </div>
-        <p>
-          <strong>Move.</strong> Mueve un archivo o directorio de un lugar a
-          otro. También se usa para <strong>renombrar</strong> archivos.
-          Ejemplo:
-          <code style="color: var(--accent2)">mv archivo.txt /destino/</code>.
-        </p>
-        <div class="flags">
-          <div class="flag-row">
-            <span class="flag-name">mv -i</span
-            ><span class="flag-desc"
-              >Pide confirmación antes de sobreescribir un archivo
-              existente.</span
-            >
-          </div>
-          <div class="flag-row">
-            <span class="flag-name">mv -u</span
-            ><span class="flag-desc"
-              >Solo mueve si el origen es más nuevo que el destino.</span
-            >
-          </div>
-        </div>
+        <p>Sirve para mover archivo de un lugar a otro.</p>
       </div>
 
       <!-- tar -->
@@ -582,10 +529,12 @@
           <span class="tag files">archivos</span>
         </div>
         <p>
-          <strong>Tape Archive.</strong> Empaqueta y comprime una colección de
-          archivos y carpetas. Genera archivos
-          <code style="color: var(--accent2)">.tar</code>; combinado con gzip
-          produce <code style="color: var(--accent2)">.tar.gz</code>.
+          El Tar significa "Tape Archive" en inglés, lo que en español sería
+          archivo de cinta de grabación, y se utiliza para comprimir una
+          colección de archivos y carpetas. En la mayoría de los casos, una vez
+          que se realiza la compresión utilizando Tar, se obtiene un archivo
+          .tar. Si se realiza una compresión adicional usando gzip, se tendrá
+          como resultado un archivo .tar.gz.
         </p>
         <div class="flags">
           <div class="flag-row">
@@ -595,37 +544,37 @@
           <div class="flag-row">
             <span class="flag-name">-v</span
             ><span class="flag-desc"
-              >Muestra el progreso detallado de la compresión.</span
+              >Muestra una descripción detallada del progreso de la
+              compresión.</span
             >
           </div>
           <div class="flag-row">
             <span class="flag-name">-f</span
-            ><span class="flag-desc"
-              >Especifica el nombre del archivo resultante.</span
-            >
+            ><span class="flag-desc">Nombre del archivo.</span>
           </div>
           <div class="flag-row">
             <span class="flag-name">-z</span
-            ><span class="flag-desc">Compresión gzip (.tar.gz).</span>
+            ><span class="flag-desc">Compresión gzip.</span>
           </div>
           <div class="flag-row">
             <span class="flag-name">-j</span
             ><span class="flag-desc">Compresión bzip2.</span>
           </div>
           <div class="flag-row">
-            <span class="flag-name">-x</span
-            ><span class="flag-desc">Extraer el contenido del archivo.</span>
-          </div>
-          <div class="flag-row">
             <span class="flag-name">-C</span
             ><span class="flag-desc"
-              >Extraer en un directorio diferente al actual.</span
+              >Extraer archivos en un directorio diferente.</span
             >
+          </div>
+          <div class="flag-row">
+            <span class="flag-name">-x</span
+            ><span class="flag-desc">Extraer el archivo.</span>
           </div>
           <div class="flag-row">
             <span class="flag-name">-r</span
             ><span class="flag-desc"
-              >Agregar o actualizar archivos dentro de un .tar existente.</span
+              >Actualizar o agregar un archivo o directorio en un archivo .tar
+              existente.</span
             >
           </div>
         </div>
@@ -638,13 +587,14 @@
           <span class="tag perm">permisos</span>
         </div>
         <p>
-          Establece <strong>enlaces simbólicos</strong> para programas
-          predeterminados comunes. Permite que múltiples programas con funciones
-          similares coexistan, determinando cuál se usa por defecto bajo un
-          nombre genérico (ej.
-          <code style="color: var(--accent2)">/usr/bin/editor</code>). El
-          administrador puede anular la selección automática en cualquier
-          momento.
+          Establecen enlaces simbólicos para programas predeterminados comunes.
+          Varios programas que cumplen funciones iguales o similares suelen
+          aparecer en un solo sistema al mismo tiempo. Por ejemplo, muchos
+          sistemas tienen varios editores de texto instalados a la vez. Esta
+          diversidad da opciones a los usuarios de un sistema, lo que permite
+          que cada uno use un editor diferente si lo desea, pero dificulta que
+          un programa haga una buena elección de editor para invocar si el
+          usuario no ha especificado una preferencia particular.
         </p>
       </div>
     </div>
@@ -658,9 +608,8 @@
           <span class="tag users">usuarios</span>
         </div>
         <p>
-          Asigna o cambia la contraseña de una cuenta de usuario. Ejemplo:
-          <code style="color: var(--accent2)">passwd nombre_usuario</code>.
-          Pedirá la nueva contraseña dos veces para confirmar.
+          Es utilizado para asignar o cambiar la contraseña de una cuenta de
+          usuario.
         </p>
       </div>
     </div>
